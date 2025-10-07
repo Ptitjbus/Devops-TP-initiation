@@ -6,6 +6,10 @@ jobs:
   publish-hello-docker-image:
     runs-on: ubuntu-latest
 
+    permissions:
+        contents: write
+        packages: write
+
     steps:
       - uses: actions/checkout@v2
 
@@ -18,5 +22,5 @@ jobs:
 
       - name: Build the hello-docker Docker image
         run: |
-          docker build . --tag ghcr.io/Ptitjbus/Devops-TP-initiation:staging
-          docker push ghcr.io/Ptitjbus/Devops-TP-initiation:staging
+          docker build . --tag ghcr.io/Ptitjbus/devops-tp-initiation:staging
+          docker push ghcr.io/Ptitjbus/devops-tp-initiation:staging
