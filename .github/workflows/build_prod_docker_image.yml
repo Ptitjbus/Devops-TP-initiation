@@ -27,3 +27,6 @@ jobs:
         run: |
           docker build . --tag ghcr.io/ptitjbus/devops-tp-initiation:production
           docker push ghcr.io/ptitjbus/devops-tp-initiation:production
+      
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2

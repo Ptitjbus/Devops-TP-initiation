@@ -1,8 +1,8 @@
 const { PubSub } = require('@google-cloud/pubsub');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 const pubSubClient = new PubSub();
-const subscription = pubSubClient.subscription(dotenv.parsed.SUBSCRIPTION_NAME);
+const subscription = pubSubClient.subscription(process.env.SUBSCRIPTION_NAME);
 
 // Create an event handler to handle messages
 const messageHandler = message => {
