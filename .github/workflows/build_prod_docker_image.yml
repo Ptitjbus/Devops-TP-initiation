@@ -1,9 +1,9 @@
-name: publish
+name: publish-prod
 
 on:
   push :
     branches:
-      - 'develop'
+      - 'main'
 
 jobs:
   publish-hello-docker-image:
@@ -25,5 +25,5 @@ jobs:
 
       - name: Build the hello-docker Docker image
         run: |
-          docker build . --tag ghcr.io/ptitjbus/devops-tp-initiation:staging
-          docker push ghcr.io/ptitjbus/devops-tp-initiation:staging
+          docker build . --tag ghcr.io/ptitjbus/devops-tp-initiation:production
+          docker push ghcr.io/ptitjbus/devops-tp-initiation:production
