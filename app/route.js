@@ -1,14 +1,14 @@
 const formValidator = require('./form_validator');
 const photoModel = require('./photo_model');
 const { PubSub } = require('@google-cloud/pubsub');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const ZipStream = require('zip-stream');
 const request = require('request');
 const { Storage } = require('@google-cloud/storage');
 const moment = require('moment');
 
-const projectId = dotenv.parsed.PROJECT_ID;
-const topicNameOrId = dotenv.parsed.TOPIC_NAME_OR_ID;
+const projectId = process.env.PROJECT_ID;
+const topicNameOrId = process.env.TOPIC_NAME_OR_ID;
 
 let storage = new Storage();
 
@@ -41,7 +41,7 @@ function route(app) {
       const filename = 'test.zip';
 
       const file = await storage
-        .bucket(dotenv.parsed.BUCKET_NAME)
+        .bucket(process.env.BUCKET_NAME)
         .file('public/users/' + filename);
       const writestream = file.createWriteStream({
         metadata: {
@@ -105,7 +105,7 @@ function route(app) {
     };
 
     const signedUrls = await storage
-      .bucket(dotenv.parsed.BUCKET_NAME)
+      .bucket(process.env.BUCKET_NAME)
       .file('public/users/' + 'test.zip')
       .getSignedUrl(options);
 
