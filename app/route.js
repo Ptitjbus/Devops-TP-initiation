@@ -6,6 +6,7 @@ const ZipStream = require('zip-stream');
 const request = require('request');
 const { Storage } = require('@google-cloud/storage');
 const moment = require('moment');
+const rateLimiter = require('./rate_limiter');
 
 const projectId = process.env.PROJECT_ID;
 const topicNameOrId = process.env.TOPIC_NAME_OR_ID;
@@ -14,6 +15,12 @@ let storage = new Storage();
 
 function route(app) {
   app.get('/zip', async (req, res) => {
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+
+    if (!rateLimiter.checkRateLimit(ip)) {
+      return res.status(429).send('Too Many Requests');
+    }
+
     const tags = req.query.tags || '';
     const tagmode = req.query.tagmode || '';
 
@@ -79,6 +86,12 @@ function route(app) {
   });
 
   app.get('/', async (req, res) => {
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+    const isRateLimited = await rateLimiter.checkRateLimit(ip);
+    if (!isRateLimited) {
+      return res.status(429).send('Too Many Requests');
+    }
+
     const tags = req.query.tags;
     const tagmode = req.query.tagmode;
 
